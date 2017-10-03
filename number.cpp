@@ -23,6 +23,9 @@ bool Number ::match(Number *num){
   }
   return number_match_or_not_match ;
 }
+bool Number ::match(Atom atom){
+  return number_atom_not_match;
+}
 bool Number ::match(Atom *atom){
   return number_atom_not_match;
 }

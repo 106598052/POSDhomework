@@ -16,6 +16,7 @@ public:
   string value();
   bool match(Number num);
   bool match(Number *num);
+  bool match(Atom atom);
   bool match(Atom *atom);
   bool match(Variable *x);
 
