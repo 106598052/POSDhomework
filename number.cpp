@@ -34,3 +34,8 @@ bool Number ::match(Variable *x){
   number_variable_match = true;
   return number_variable_match;
 }
+bool Number ::match(Variable x){
+  x.setvalue(value());
+  number_variable_match = true;
+  return number_variable_match;
+}

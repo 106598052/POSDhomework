@@ -19,6 +19,7 @@ public:
   bool match(Atom atom);
   bool match(Atom *atom);
   bool match(Variable *x);
+  bool match(Variable x);
 
 private:
   int _value;
@@ -26,7 +27,6 @@ private:
   bool number_match_or_not_match = false;
   bool number_atom_not_match = false;
   bool number_variable_match = false;
-
 };
 
 #endif
