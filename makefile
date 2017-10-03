@@ -7,7 +7,7 @@ else
 	g++ -o hw2 mainTerm.o number.o atom.o variable.o -lgtest -lpthread
 endif
 
-mainTerm.o: mainTerm.cpp utTerm.h number.h 
+mainTerm.o: mainTerm.cpp utTerm.h number.h
 	g++ -std=c++11 -c mainTerm.cpp
 number.o: number.h number.cpp
 	g++ -std=c++11 -c number.cpp
@@ -19,6 +19,6 @@ variable.o: variable.h variable.cpp
 #	g++ -std=c++11 -c Atom.cpp
 
 clean:
-	rm -f *.o *hw2
+	rm -f *.o
 stat:
 	wc *.h *.cpp
