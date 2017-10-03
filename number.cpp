@@ -35,6 +35,9 @@ bool Number ::match(Variable *x){
     x->setvalue(value());
     x->_assignable = false;
   }
+  else{
+    return_value = (value() == x->value());
+  }
   return return_value;
 }
 bool Number ::match(Variable x){
@@ -42,6 +45,9 @@ bool Number ::match(Variable x){
   if(x._assignable){
     x.setvalue(value());
     x._assignable = false;
+  }
+  else{
+    return_value = (value() == x.value());
   }
   return return_value;
 }
