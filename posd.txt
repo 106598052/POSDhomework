@@ -1,0 +1,37 @@
+20170913
+
+google test 安裝
+
+#ifndef EXP_H	//如果沒有定義
+#define EXP_H	//就定義
+.h可能被很多其他include,如果沒有這兩行就會變重複定義
+
+shape const &p
+p is a reference to const shape
+shape const *p
+p is a pointer to const shape
+
+20170915
+
+shape is a vector of a pointer to shape .
+
+20170929
+tom = jerry --> false
+Tom = jerry --> true	大寫是變數
+
+X = tom 	念作X match tom
+
+tom = X 和 X = tom 都是X和tom做matching
+
+在prolog中 X是變數 沒有型態
+
+先完成makefile
+
+X=tom , X = jerry. --> false
+
+prolog中 變數可以跟任何東西matching
+
+不要太多return debug會瘋掉
+把邏輯弄乾淨 把return弄少一點
+
+readable = matinable
