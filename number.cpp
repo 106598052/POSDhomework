@@ -11,6 +11,12 @@ string Number ::symbol(){
 string Number ::value(){
   return to_string(_value);
 }
+bool Number ::match(Number num){
+  if(to_string(_value) ==num.value()){
+    number_match_or_not_match = true;
+  }
+  return number_match_or_not_match ;
+}
 bool Number ::match(Number *num){
   if(_value==num->_value){
     number_match_or_not_match = true;
