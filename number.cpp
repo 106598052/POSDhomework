@@ -6,7 +6,7 @@
 using namespace std;
 
 string Number ::symbol(){
-  return _symbol;
+  return to_string(_value);
 }
 string Number ::value(){
   return to_string(_value);

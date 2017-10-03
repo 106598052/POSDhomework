@@ -9,39 +9,39 @@
 
 //test Number.value()
 TEST (Number,ctor) {
-  Number n("number1",100);
+  Number n(100);
   EXPECT_EQ("100",n.value());
 }
 //test Number.symbol()
 TEST (Number, symbol) {
-  Number n("number1",100);
-  EXPECT_EQ("number1",n.symbol());
+  Number n(100);
+  EXPECT_EQ("100",n.symbol());
 }
 //?- 25=25.
 //true.
 TEST (Number, matchSuccess) {
-  Number n1("number1",25);
-  Number n2("number2",25);
+  Number n1(25);
+  Number n2(25);
   EXPECT_TRUE(n1.match(&n2));
 }
 //?- 25=0.
 //false.
 TEST (Number, matchFailureDiffValue) {
-  Number n1("number1",25);
-  Number n2("number2",0);
+  Number n1(25);
+  Number n2(0);
   EXPECT_FALSE(n1.match(&n2));
 }
 //?- 25=tom.
 //false.
 TEST (Number, matchFailureDiffConstant) {
-  Number n("number1",25);
+  Number n(25);
   Atom tom("tom");
   EXPECT_FALSE(n.match(&tom));
 }
 //?- 25=X.
 //true.
 TEST (Number, matchSuccessToVar) {
-  Number n("number1",25);
+  Number n(25);
   Variable var("X");
   EXPECT_TRUE(n.match(&var));
 }
@@ -49,7 +49,7 @@ TEST (Number, matchSuccessToVar) {
 //false.
 TEST (Atom, matchFailureDiffConstant) {
   Atom tom("tom");
-  Number n1("number1",25);
+  Number n1(25);
   EXPECT_FALSE(tom.match(&n1));
 }
 // ?- tom = X.
@@ -80,7 +80,7 @@ TEST (Atom, matchFailureToVarInstantedToDiffConstant) {
 // X = 5.
 TEST (Var, matchSuccessToNumber) {
   Variable var("X");
-  Number num("number1",5);
+  Number num(5);
   ASSERT_TRUE(var.match(&num));
 }
 
@@ -88,8 +88,8 @@ TEST (Var, matchSuccessToNumber) {
 // false.
 TEST (Var, matchFailureToTwoDiffNumbers) {
   Variable var("X");
-  Number num1("number1",25);
-  Number num2("number2",100);
+  Number num1(25);
+  Number num2(100);
   var.match(&num1);
   ASSERT_FALSE(var.match(&num2));
 }
@@ -99,7 +99,7 @@ TEST (Var, matchFailureToTwoDiffNumbers) {
 TEST (Var, matchSuccessToAtomThenFailureToNumber) {
   Variable var("X");
   Atom tom("tom");
-  Number num("number1",25);
+  Number num(25);
   var.match(&tom);
   ASSERT_FALSE(var.match(&num));
 }
@@ -108,7 +108,7 @@ TEST (Var, matchSuccessToAtomThenFailureToNumber) {
 TEST (Var, matchSuccessToAtomThenFailureToNumber2) {
   Atom tom("tom");
   Variable var("X");
-  Number num("number1",25);
+  Number num(25);
   tom.match(&var);
   ASSERT_TRUE(num.match(&var));
 }

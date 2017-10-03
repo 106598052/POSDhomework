@@ -11,7 +11,7 @@ class Variable;
 
 class Number{
 public:
-  Number(string name , int value):_symbol(name),_value(value) {}
+  Number(int value):_value(value) {}
   string symbol();
   string value();
   bool match(Number *num);

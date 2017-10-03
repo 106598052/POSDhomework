@@ -1,4 +1,4 @@
-﻿20170913
+20170913
 
 google test 安裝
 
@@ -35,5 +35,3 @@ prolog中 變數可以跟任何東西matching
 把邏輯弄乾淨 把return弄少一點
 
 readable = matinable
-
-20171003 

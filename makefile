@@ -19,6 +19,6 @@ variable.o: variable.h variable.cpp
 #	g++ -std=c++11 -c Atom.cpp
 
 clean:
-	rm -f *.o
+	rm -f *.o *hw2
 stat:
 	wc *.h *.cpp
