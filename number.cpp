@@ -30,12 +30,18 @@ bool Number ::match(Atom *atom){
   return number_atom_not_match;
 }
 bool Number ::match(Variable *x){
-  x->setvalue(value());
-  number_variable_match = true;
-  return number_variable_match;
+  bool return_value = x->_assignable;
+  if(x->_assignable){
+    x->setvalue(value());
+    x->_assignable = false;
+  }
+  return return_value;
 }
 bool Number ::match(Variable x){
-  x.setvalue(value());
-  number_variable_match = true;
-  return number_variable_match;
+  bool return_value = x._assignable;
+  if(x._assignable){
+    x.setvalue(value());
+    x._assignable = false;
+  }
+  return return_value;
 }
