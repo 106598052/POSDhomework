@@ -16,7 +16,9 @@ public:
   bool _assignable = true;
   string value();
   bool match(Atom *atom);//match for atom
+  bool match(Atom atom);
   bool match(Number *num);//match for number
+  bool match(Number num);
   void setvalue(string s);
   void setassignable();
 
