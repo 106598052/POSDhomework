@@ -8,13 +8,13 @@ else
 endif
 
 mainTerm.o: mainTerm.cpp utTerm.h number.h
-	g++ -std=c++11 -c mainTerm.cpp
+	g++ -std=gnc11 -c mainTerm.cpp
 number.o: number.h number.cpp
-	g++ -std=c++11 -c number.cpp
+	g++ -std=gnc11 -c number.cpp
 atom.o: atom.h atom.cpp
-	g++ -std=c++11 -c atom.cpp
+	g++ -std=gnc11 -c atom.cpp
 variable.o: variable.h variable.cpp
-	g++ -std=c++11 -c variable.cpp
+	g++ -std=gnc11 -c variable.cpp
 #Atom.o: Atom.h Atom.cpp
 #	g++ -std=c++11 -c Atom.cpp
 
