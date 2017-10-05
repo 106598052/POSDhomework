@@ -11,7 +11,7 @@ string Number ::symbol(){
 string Number ::value(){
   return to_string(_value);
 }
-bool Number ::match(Number num){
+bool Number ::match(Number& num){
   if(to_string(_value) ==num.value()){
     number_match_or_not_match = true;
   }
@@ -23,7 +23,7 @@ bool Number ::match(Number *num){
   }
   return number_match_or_not_match ;
 }
-bool Number ::match(Atom atom){
+bool Number ::match(Atom& atom){
   return number_atom_not_match;
 }
 bool Number ::match(Atom *atom){
@@ -40,7 +40,7 @@ bool Number ::match(Variable *x){
   }
   return return_value;
 }
-bool Number ::match(Variable x){
+bool Number ::match(Variable& x){
   bool return_value = x._assignable;
   if(x._assignable){
     x.setvalue(value());

@@ -14,12 +14,12 @@ public:
   Number(int value):_value(value) {}
   string symbol();
   string value();
-  bool match(Number num);
+  bool match(Number& num);
   bool match(Number *num);
-  bool match(Atom atom);
+  bool match(Atom& atom);
   bool match(Atom *atom);
   bool match(Variable *x);
-  bool match(Variable x);
+  bool match(Variable& x);
 
 private:
   int _value;

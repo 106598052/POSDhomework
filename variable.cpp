@@ -16,7 +16,7 @@ bool Variable ::match(Atom *atom){
   }
   return return_value;
 }
-bool Variable ::match(Atom atom){
+bool Variable ::match(Atom& atom){
   bool return_value = _assignable;
   if(_assignable){
     _value = atom._symbol;
@@ -38,7 +38,7 @@ bool Variable ::match(Number *num){
   }
   return return_value;
 }
-bool Variable ::match(Number num){
+bool Variable ::match(Number& num){
   bool return_value = _assignable;
   if(_assignable){
     _value = num.value();

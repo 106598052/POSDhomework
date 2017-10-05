@@ -5,7 +5,7 @@
 bool Atom :: match(Number *number){
    return MATCH_ATOM_TO_NUMBER_FAILURE;
 }
-bool Atom ::match(Number number){
+bool Atom ::match(Number& number){
   return MATCH_ATOM_TO_NUMBER_FAILURE;
 }
 bool Atom:: operator ==(Atom a){
@@ -24,7 +24,7 @@ bool Atom:: match(Variable *X){
   }
   return return_value;
 }
-bool Atom:: match(Variable X){
+bool Atom:: match(Variable& X){
   bool return_value = false;
   if(X._assignable){
     X.setvalue(_symbol);
