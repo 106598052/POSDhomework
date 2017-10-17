@@ -136,7 +136,6 @@ TEST(Struct, nested_struct2)
   EXPECT_EQ("s1(s2(X))",s1.symbol());
   EXPECT_EQ("s1(s2(tom))",s1.value());
 }
-
 // Given there are Struct s1 contains Struct s2
 // And Struct s2 contains Variable X
 // When Variable X matches an Number pi: 3.14
@@ -152,7 +151,7 @@ TEST(Struct, nested_struct3)
   Number pi(3.14);
   var1.match(pi);
   EXPECT_EQ("s1(s2(X))",s1.symbol());
-  EXPECT_EQ("s1(s2(3.140000))",s1.value());
+  EXPECT_EQ("s1(s2(3.14))",s1.value());
 }
 
 // Given there are Struct s1 contains Struct s2 and Variable X

@@ -20,6 +20,7 @@ public:
   bool match(Atom *atom);
   bool match(Variable *x);
   bool match(Variable& x);
+  //double check_number(double value);
 
 private:
   double _value;
