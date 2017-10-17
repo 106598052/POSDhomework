@@ -4,6 +4,7 @@
 
 bool Atom ::match(Variable& var){
   if(var.isvar){
+    var._value = _symbol;
     return true;
   }
   else{
