@@ -26,6 +26,7 @@ public:
   bool arg_has_match = false;
   bool match_struct_before = false;
   string var_match_struct = "";
+  bool isvar = true;
 
 private:
   std::vector<string *> _args = {&_value};

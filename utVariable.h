@@ -143,4 +143,13 @@ TEST (Variable, Struct2) {
   EXPECT_EQ("s(teddy)",varY.value());
 }
 
+/*
+TEST (Variable, TAtest) {
+  Variable varX("X");
+  Variable varY("Y");
+  Number num(1);
+  varY.match(varX);
+  num.match(varX);
+  EXPECT_EQ("Y",varX.value());
+}*/
 #endif
