@@ -5,23 +5,33 @@
 
 using std::string;
 
-class Number;
 
-class Variable;
+class Term{
 
-class Atom {
 public:
-  Atom(string s):_symbol(s) {}
-  //bool operator(Atom a, Atom b)
-  //因為在物件中已經有自己所以只要讀入一個參數
-  bool operator == /*C++中 overload operator ==*/(Atom a);
-  bool match(Number *number);
-  bool match(Number& number);
-  bool match(Variable *X);
-  bool match(Variable& X);
-  string _symbol;
-private:
-  bool MATCH_ATOM_TO_NUMBER_FAILURE = false;
+  virtual string symbol() const= 0;
+
+  virtual string value() const{
+    return symbol();
+  };
+
+  virtual bool match(Term & term) {
+    return symbol() == term.symbol();
+  }
+
+
 };
+
+class Atom : public Term{
+public:
+  Atom (string s):_symbol(s) {}
+
+  string symbol() const{
+    return _symbol;
+  }
+
+  string _symbol;
+};
+
 
 #endif

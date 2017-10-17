@@ -11,7 +11,7 @@ class Variable;
 
 class Number{
 public:
-  Number(int value):_value(value) {}
+  Number(double value):_value(value) {}
   string symbol();
   string value();
   bool match(Number& num);
@@ -22,7 +22,7 @@ public:
   bool match(Variable& x);
 
 private:
-  int _value;
+  double _value;
   string _symbol;
   bool number_match_or_not_match = false;
   bool number_atom_not_match = false;
