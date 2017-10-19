@@ -67,7 +67,7 @@ bool Variable ::match(Number& num){
 bool Variable ::match(Variable& var){
   bool return_value = _assignable;
   if(_assignable && var._assignable){
-    var._value = _value;
+    _value = var._value;
     //記錄另一個var
     _args.push_back(&var._value);
     var._args = _args;
