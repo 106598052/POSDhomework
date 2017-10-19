@@ -142,13 +142,14 @@ TEST (Variable, Struct2) {
   EXPECT_EQ("Y",varY.symbol());
   EXPECT_EQ("s(teddy)",varY.value());
 }
-
 /*
+
 TEST (Variable, TAtest) {
   Variable varX("X");
   Variable varY("Y");
   Number num(1);
   varY.match(varX);
+  EXPECT_EQ("Y",varX.value());
   num.match(varX);
   EXPECT_EQ("Y",varX.value());
 }*/
