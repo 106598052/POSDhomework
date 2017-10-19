@@ -129,6 +129,7 @@ bool Variable ::match(Struct& s){
   return true;
 }
 
+
 void Variable ::setvalue(string s){
   _value = s ;
 }
