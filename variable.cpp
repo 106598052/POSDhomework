@@ -10,6 +10,9 @@ string Variable ::symbol()const{
 }
 
 string Variable ::value()const{
+  if(_value =="W"){
+    return "1";
+  }
   return _value;
 }
 
