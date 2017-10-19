@@ -13,9 +13,6 @@ string Variable ::value()const{
   if(_value =="W"){
     return "1";
   }
-  else if(_value =="s(X)"&& var_struct){
-    return "s(teddy)";
-  }
   return _value;
 }
 
@@ -128,7 +125,6 @@ bool Variable ::match(Struct& s){
   arg_has_match = true;
   match_struct_before = true;
   var_match_struct = s._name.value() + "(";
-  var_struct =true;
   return true;
 }
 
