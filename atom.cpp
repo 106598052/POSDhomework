@@ -1,17 +1,13 @@
 #include "atom.h"
-#include "number.h"
-#include "variable.h"
+#include <string>
+#include <sstream>
+#include "term.h"
+using std::string;
 
-bool Atom ::match(Variable& var){
-  if(var.isvar){
-    var._value = _symbol;
-    return true;
-  }
-  else{
-    return symbol() == var.symbol();
-  }
-}
+Atom::Atom(string s){_symbol = s; }
 
-bool Atom ::match(Atom & tom) {
-  return symbol() == tom.symbol();
+Number::Number(double db){
+  std::ostringstream strs;
+  strs << db;
+  _symbol = strs.str();
 }

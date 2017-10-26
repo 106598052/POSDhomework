@@ -2,38 +2,26 @@
 #define ATOM_H
 
 #include <string>
-
+//#include <sstream>
+#include "term.h"
 using std::string;
-
-class Variable;
-class Term{
-
-public:
-  virtual string symbol() const= 0;
-
-  virtual string value() const{
-    return symbol();
-  };
-
-  virtual bool match(Term & term) {
-    return symbol() == term.symbol();
-  }
-
-
-};
 
 class Atom : public Term{
 public:
-  Atom (string s):_symbol(s) {}
-
-  string symbol() const{
-    return _symbol;
-  }
-  bool match(Variable& var);
-  bool match(Atom& tom);
-
-  string _symbol;
+  Atom(string s);//{_symbol = s; }
+//private:
+  //string _symbol;
 };
 
+class Number : public Term{
+public:
+  Number(double db);/*{
+    std::ostringstream strs;
+    strs << db;
+    _symbol = strs.str();
+  }*/
+//private:
+//  string _symbol;
+};
 
 #endif
