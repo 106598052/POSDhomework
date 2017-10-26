@@ -12,16 +12,15 @@ public:
 //private:
   //string _symbol;
 };
-
+/*
 class Number : public Term{
 public:
-  Number(double db);/*{
+  Number(double db);{
     std::ostringstream strs;
     strs << db;
     _symbol = strs.str();
-  }*/
+  }
 //private:
 //  string _symbol;
-};
-
+};*/
 #endif

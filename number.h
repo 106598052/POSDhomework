@@ -15,4 +15,11 @@ public:
     _symbol = strs.str();
   }
 };
+
+/*
+Number::Number(double db){
+  std::ostringstream strs;
+  strs << db;
+  _symbol = strs.str();
+}*/
 #endif
