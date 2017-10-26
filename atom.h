@@ -8,19 +8,6 @@ using std::string;
 
 class Atom : public Term{
 public:
-  Atom(string s);//{_symbol = s; }
-//private:
-  //string _symbol;
+  Atom(string s);
 };
-/*
-class Number : public Term{
-public:
-  Number(double db);{
-    std::ostringstream strs;
-    strs << db;
-    _symbol = strs.str();
-  }
-//private:
-//  string _symbol;
-};*/
 #endif
