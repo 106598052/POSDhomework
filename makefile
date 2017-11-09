@@ -1,16 +1,14 @@
 all: hw5
 
-hw5: mainParser.o term.o variable.o list.o
+hw5: mainParser.o term.o list.o
 ifeq (${OS}, Windows_NT)
-	g++ -o hw5 mainParser.o term.o variable.o list.o -lgtest
+	g++ -o hw5 mainParser.o term.o list.o -lgtest
 else
-	g++ -o hw5 mainParser.o term.o variable.o list.o -lgtest -lpthread
+	g++ -o hw5 mainParser.o term.o list.o -lgtest -lpthread
 endif
 
 mainParser.o: mainParser.cpp atom.h struct.h
 	 	g++  -std=gnu++0x -c  mainParser.cpp
-variable.o: variable.cpp number.h atom.h variable.h
-		g++ -std=gnu++0x -c variable.cpp
 term.o: term.h variable.h term.cpp
 		g++ -std=gnu++0x -c term.cpp
 list.o: list.h list.cpp
