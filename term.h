@@ -14,9 +14,8 @@ public:
   virtual int arity() const {return 0;}
   virtual Term * args(int index) {throw string("無法使用");}
 protected:
-  Term ():_symbol(""){} //預設建構子
-  Term (string s):_symbol(s) {} //帶string參建構子，初始化 _symbol
-  //帶double參數建構子，透過stream將小數補0移除
+  Term ():_symbol(""){}
+  Term (string s):_symbol(s) {}
   Term(double db){
     std::ostringstream strs;
     strs << db;

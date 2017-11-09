@@ -12,11 +12,11 @@ public:
   string symbol() const;
   string value() const;
   bool match(Term & term);
-  Term * head() const; //使用pointer的用意?
+  Term * head() const;
   List * tail() const;
   bool ComparisonList(List *list);
   int getSize() const;
-  vector<Term *> _elements; //有時間將他變保護
+  vector<Term *> _elements;
 };
 
 #endif

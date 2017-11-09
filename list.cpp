@@ -43,9 +43,9 @@ List * List::tail() const{
 
 bool List::match(Term & term){
   bool ret = false;
-  if(typeid(term) == typeid(Variable)){ //match var 機制
+  if(typeid(term) == typeid(Variable)){
     ret = term.match(*this);
-  }else if(_elements.size() != 0){  //match list 機制
+  }else if(_elements.size() != 0){
     List *pt = dynamic_cast<List *>(&term);
     if(pt){
       ret = ComparisonList(pt);
