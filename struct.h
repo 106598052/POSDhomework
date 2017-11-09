@@ -1,7 +1,6 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
-#include "term.h"
 #include "atom.h"
 #include <vector>
 #include <string>
@@ -12,9 +11,9 @@ class Struct: public Term {
 public:
   Struct(Atom name, std::vector<Term *> args): _name(name) {
     _args = args;
-  }//Atom name => Term name
+  }
 
-  Term * args(int index) {
+  Term * args(int index){
     return _args[index];
   }
 
@@ -36,6 +35,9 @@ public:
       ret += (*it)->value()+", ";
     ret  += (*it)->value()+")";
     return ret;
+  }
+  int arity() const{
+    return _args.size();
   }
 private:
   Atom _name;
