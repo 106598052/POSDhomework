@@ -1,14 +1,16 @@
 #ifndef PARSER_H
 #define PARSER_H
 #include <string>
-using std::string;
+#include <iostream>
+using namespace std;
 
 #include "atom.h"
 #include "variable.h"
 #include "global.h"
+#include "list.h"
 #include "scanner.h"
 #include "struct.h"
-#include "list.h"
+#include "number.h"
 
 class Parser{
 public:

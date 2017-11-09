@@ -3,9 +3,8 @@
 
 #include "parser.h"
 #include "scanner.h"
-#include "list.h"
 #include "variable.h"
-#include "atom.h"
+#include "struct.h"
 
 class ParserTest : public ::testing::Test {
 protected:
@@ -238,7 +237,7 @@ TEST_F(ParserTest, parseStructOfStructAllTheWay2) {
 TEST_F(ParserTest, parseStructNoArg) {
   Scanner scanner("point()");
   Parser parser(scanner);
-  //EXPECT_EQ("point()", parser.createTerm()->symbol());
+  EXPECT_EQ("point()", parser.createTerm()->symbol());
 }
 
 

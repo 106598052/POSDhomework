@@ -22,10 +22,14 @@ public:
   }
   string symbol() const {
     string ret = _name.symbol() + "(";
-    std::vector<Term *>::const_iterator it = _args.begin();
-    for (; it != _args.end()-1; ++it)
-      ret += (*it)->symbol()+", ";
-    ret  += (*it)->symbol()+")";
+    if(_args.size()){
+      std::vector<Term *>::const_iterator it = _args.begin();
+      for (; it != _args.end()-1; ++it){
+        ret += (*it)->symbol()+", ";
+      }
+      ret  += (*it)->symbol();
+    }
+    ret += ")";
     return ret;
   }
   string value() const {
@@ -36,7 +40,7 @@ public:
     ret  += (*it)->value()+")";
     return ret;
   }
-  int arity() const{
+  int arity ()const{
     return _args.size();
   }
 private:
