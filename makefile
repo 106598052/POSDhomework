@@ -1,22 +1,21 @@
-all: hw5
+all: hw6
 
-hw5: mainParser.o term.o list.o
+hw6: mainParser.o atom.o list.o node.o
 ifeq (${OS}, Windows_NT)
-	g++ -o hw5 mainParser.o term.o list.o -lgtest
+	g++ -o hw6 mainParser.o atom.o list.o node.o -lgtest
 else
-	g++ -o hw5 mainParser.o term.o list.o -lgtest -lpthread
+	g++ -o hw6 mainParser.o atom.o list.o node.o -lgtest -lpthread
 endif
 
 mainParser.o: mainParser.cpp atom.h struct.h
 	 	g++  -std=gnu++0x -c  mainParser.cpp
-term.o: term.h variable.h term.cpp
-		g++ -std=gnu++0x -c term.cpp
+atom.o: atom.h atom.cpp
+		g++ -std=gnu++0x -c atom.cpp
 list.o: list.h list.cpp
 		g++ -std=gnu++0x -c list.cpp
-
+node.o: node.h node.cpp
+		g++ -std=gnu++0x -c node.cpp
 clean:
-ifeq (${OS}, Windows_NT)
-		del *.o *.exe
-else
-		rm -f *.o hw5
-endif
+	rm -f *.o hw6
+stat:
+	wc *.h *.cpp

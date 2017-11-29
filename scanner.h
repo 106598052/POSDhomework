@@ -80,9 +80,6 @@ public:
     return buffer[pos++];
   }
 
-  bool isEmpty(){
-    return !((bool)buffer.size());
- }
 private:
   string buffer;
   int pos;
