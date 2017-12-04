@@ -6,6 +6,9 @@
 #include "atom.h"
 #include "list.h"
 #include "iterator.h"
+#include "number.h"
+#include "term.h"
+
 TEST(iterator, first) {
     Number one(1);
     Variable X("X");
