@@ -9,7 +9,7 @@
 using std::vector;
 
 class Variable ;
-
+class Iterator ;
 class List : public Term {
 public:
   string symbol() const ;
@@ -24,6 +24,8 @@ public:
     return _elements[index];
   }
   int arity() const {return _elements.size();}
+  Iterator* createDFSIterator();
+  Iterator* createBFSIterator();
 private:
   vector<Term *> _elements;
 };

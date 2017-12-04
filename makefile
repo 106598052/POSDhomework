@@ -1,21 +1,22 @@
-all: hw6
+all: hw7
 
-hw6: mainParser.o atom.o list.o node.o
+hw7: mainIterator.o atom.o list.o struct.o
 ifeq (${OS}, Windows_NT)
-	g++ -o hw6 mainParser.o atom.o list.o node.o -lgtest
+	g++ -o hw7 mainIterator.o atom.o list.o struct.o -lgtest
 else
-	g++ -o hw6 mainParser.o atom.o list.o node.o -lgtest -lpthread
+	g++ -o hw7 mainIterator.o atom.o list.o struct.o -lgtest -lpthread
 endif
 
-mainParser.o: mainParser.cpp atom.h struct.h
-	 	g++  -std=gnu++0x -c  mainParser.cpp
-atom.o: atom.h atom.cpp
-		g++ -std=gnu++0x -c atom.cpp
-list.o: list.h list.cpp
-		g++ -std=gnu++0x -c list.cpp
-node.o: node.h node.cpp
-		g++ -std=gnu++0x -c node.cpp
+mainIterator.o: mainIterator.cpp utIterator.h
+	g++ -std=c++11 -c mainIterator.cpp
+atom.o: atom.cpp atom.h variable.h
+	g++ -std=c++11 -c atom.cpp
+list.o:list.cpp list.h
+		g++ -std=c++11 -c list.cpp
+struct.o:struct.cpp struct.h
+		g++ -std=c++11 -c struct.cpp
+
 clean:
-	rm -f *.o hw6
+	rm -f *.o hw7
 stat:
 	wc *.h *.cpp
