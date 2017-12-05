@@ -2,7 +2,7 @@
 #define VARIABLE_H
 
 #include <string>
-#include "term.h"
+#include "atom.h"
 using std::string;
 
 class Variable : public Term {
@@ -22,10 +22,6 @@ public:
       return true;
     }
     return _inst->match(term);
-  }
-  Term *getinst()
-  {
-    return _inst;
   }
 private:
   Term * _inst;

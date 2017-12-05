@@ -5,38 +5,38 @@
 #include "list.h"
 #include <queue>
 
-using namespace std;
+template <class T>
 class Iterator {
 public:
   virtual void first() = 0;
   virtual void next() = 0;
-  virtual Term* currentItem() const = 0;
+  virtual T currentItem() const = 0;
   virtual bool isDone() const = 0;
 };
 
-class NullIterator :public Iterator{
+template <class T>
+class NullIterator :public Iterator<T>{
 public:
-  NullIterator(Term *n){}
+  NullIterator(T n){}
   void first(){}
   void next(){}
-  Term * currentItem() const{
+  T currentItem() const{
       return nullptr;
   }
   bool isDone() const{
     return true;
   }
-
 };
 
-class StructIterator :public Iterator {
+template <class T>
+class StructIterator :public Iterator<T> {
 public:
   friend class Struct;
-  StructIterator(Struct *s): _index(0), _s(s) {}
   void first() {
     _index = 0;
   }
 
-  Term* currentItem() const {
+  T currentItem() const {
     return _s->args(_index);
   }
 
@@ -47,14 +47,14 @@ public:
   void next() {
     _index++;
   }
+   StructIterator(Struct *s): _index(0), _s(s) {}
 private:
-  //FRIEND_TEST(iterator, nested_iterator);
-
   int _index;
   Struct* _s;
 };
 
-class ListIterator :public Iterator {
+template <class T>
+class ListIterator :public Iterator<T> {
 public:
   ListIterator(List *list): _index(0), _list(list) {}
 
@@ -62,7 +62,7 @@ public:
     _index = 0;
   }
 
-  Term* currentItem() const {
+  T currentItem() const {
     return _list->args(_index);
   }
 
@@ -78,9 +78,10 @@ private:
   List* _list;
 };
 
-class DFSIterator :public Iterator {
+template <class T>
+class DFSIterator :public Iterator<T> {
 public:
-  DFSIterator(Term *term): _index(0), _term(term) {}
+  DFSIterator(T term): _index(0), _term(term) {}
 
   void first() {
     _index = 1;
@@ -89,7 +90,7 @@ public:
 
   }
 
-  Term* currentItem() const {
+  T currentItem() const {
     return _terms[_index];
   }
 
@@ -101,17 +102,10 @@ public:
     _index++;
   }
 
-  void DFS(Term * term) {
+  void DFS(T term) {
     _terms.push_back(term);
     Struct *ps = dynamic_cast<Struct*>(term);
     List *pl = dynamic_cast<List*>(term);
-
-    // Iterator* it = term->createIterator();
-    // it->first();
-    // while(!it->isDone()){
-    //   DFS(it->currentItem());
-    //   it->next();
-    // }
     if (ps){
       for (int i=0;i<ps->arity();i++)
         DFS(ps->args(i));
@@ -124,13 +118,14 @@ public:
   }
 private:
   int _index;
-  Term *_term;
-  std::vector<Term *> _terms;
+  T _term;
+  std::vector<T> _terms;
 };
 
-class BFSIterator :public Iterator {
+template <class T>
+class BFSIterator :public Iterator<T> {
 public:
-  BFSIterator(Term *term): _index(0), _term(term) {}
+  BFSIterator(T term): _index(0), _term(term) {}
 
   void first() {
     _index = 1;
@@ -138,7 +133,7 @@ public:
     BFS(_term);
   }
 
-  Term* currentItem() const {
+  T currentItem() const {
     return _terms[_index];
   }
 
@@ -150,37 +145,11 @@ public:
     _index++;
   }
 
-  void BFS(Term * term) {
-    // queue<Term *> q;
-    // q.push(term);
-    // next();
-    // if (!isDone()) {
-    //   BFS(_terms[_index]);
-    // }
-
-    // Struct *ps = dynamic_cast<Struct*>(term);
-    // List *pl = dynamic_cast<List*>(term);
-    // if (ps){
-    //   for (int i=0;i<ps->arity();i++)
-    //     _terms.push_back(ps->args(i));
-    // }
-    // else if(pl)
-    // {
-    //   for (int i=0;i<pl->arity();i++)
-    //     _terms.push_back(pl->args(i));
-    // }
-    // else {
-    //   // _terms.push_back(term);
-    //   return;
-    // }
-    // for(int index=tmp;index<_terms.size();index++){
-    //   BFS(_terms[index]);
-    // }
-
-    queue<Term *> q;
+  void BFS(T term) {
+    queue<T> q;
     q.push(_term);
     while(!q.empty()) {
-      Term *n = q.front();
+      T n = q.front();
       q.pop();
       _terms.push_back(n);
       Struct *ps = dynamic_cast<Struct *>(n);
@@ -196,7 +165,7 @@ public:
   }
 private:
   int _index, tmp = 0;
-  Term *_term;
-  std::vector<Term *> _terms;
+  T _term;
+  std::vector<T> _terms;
 };
 #endif
