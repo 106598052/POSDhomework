@@ -1,13 +1,10 @@
-#ifndef NUMBER_H
-#define NUMBER_H
+#ifndef NUMBER_H_INCLUDED
+#define NUMBER_H_INCLUDED
 
-#include <string>
 #include "term.h"
-using std::string;
 
 class Number : public Term{
 public:
-  Number(double db):Term(db) {}
+  Number(double db):Term(db) {} 
 };
-
 #endif
