@@ -24,7 +24,7 @@ public:
         string s = extractAtom();
         processToken<ATOM>(s);
         return ATOM;
-      } else if (isSpecialCh(currentChar())) {
+      } else if (isSpecialCh(currentChar()) && position() < buffer.length() - 1) {
         string s = extractAtomSC();
         processToken<ATOMSC>(s);
         return ATOMSC;
@@ -35,6 +35,38 @@ public:
       } else {
         _tokenValue = NONE;
         return extractChar();
+      }
+  }
+
+  int peekNextToken() {
+      int originalIndex  = pos ;
+      if (skipLeadingWhiteSpace() >= buffer.length()) {
+          pos = originalIndex;
+          return EOS;
+      }
+      else if (isdigit(currentChar())) {
+          _tokenValue = extractNumber();
+          pos = originalIndex;
+          return NUMBER;
+      }  else if (islower(currentChar())) {
+          string s = extractAtom();
+          processToken<ATOM>(s);
+          pos = originalIndex;
+          return ATOM;
+      } else if (isSpecialCh(currentChar()) && position() < buffer.length() - 1) {
+          string s = extractAtomSC();
+          processToken<ATOMSC>(s);
+          pos = originalIndex;
+          return ATOMSC;
+      } else if (isupper(currentChar()) || currentChar() == '_') {
+          string s = extractVar();
+          processToken<VAR>(s);
+          pos = originalIndex;
+          return VAR;
+      } else {
+          _tokenValue = NONE;
+          pos = originalIndex;
+          return extractChar();
       }
   }
 
@@ -51,7 +83,7 @@ public:
     return buffer[pos];
   }
 
-  // extractX: extract X and set position right after X
+
   int extractNumber() {
     int posBegin = position();
     for (;isdigit(buffer[pos]); ++pos);
@@ -60,7 +92,7 @@ public:
 
   string extractAtom() {
     int posBegin = position();
-    for (;isalnum(buffer[pos]); ++pos);
+    for (;isalnum(buffer[pos])|| buffer[pos] == '_'; ++pos);
     return buffer.substr(posBegin, pos-posBegin);
   }
 
@@ -86,7 +118,7 @@ private:
   int _tokenValue;
 
 private:
-  // case-based populating symtable and setting _tokenValue
+
   template <int TokenType>
   void processToken(string const & s) {
     int val = -1;
@@ -94,7 +126,7 @@ private:
         _tokenValue = val;
     } else {
       symtable.push_back(pair<string, int>(s,TokenType));
-       _tokenValue = symtable.size()-1; // index to symtable
+       _tokenValue = symtable.size()-1;
     }
   }
 };

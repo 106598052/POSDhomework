@@ -2,31 +2,40 @@
 #define PARSER_H
 #include <string>
 using std::string;
-#include <iostream>
-using namespace std;
+
 #include "atom.h"
 #include "variable.h"
 #include "global.h"
 #include "scanner.h"
 #include "struct.h"
 #include "list.h"
-#include "utParser.h"
-#include "node.h"
-#include "term.h"
-#include "number.h"
+#include "exp.h"
+#include <stack>
+
+using std::stack;
 
 class Parser{
-
 public:
-  Parser(Scanner scanner) : _scanner(scanner), _terms(){}
+  Parser(Scanner scanner) : _scanner(scanner), _terms() {}
 
   Term* createTerm(){
     int token = _scanner.nextToken();
     _currentToken = token;
+    //printf("token:%d\n",_currentToken);
     if(token == VAR){
-      return new Variable(symtable[_scanner.tokenValue()].first);
+      //printf("%s\n","token == VAR");
+      for (int i = 0; i < _varVector.size(); i++) {
+        //printf("%s\n","_varVector != null");
+        if ( symtable[_scanner.tokenValue()].first == _varVector[i]->symbol()){
+          //printf("%s\n","_varVector has the same var");
+          return _varVector[i];
+        }
+      }
+      //printf("%s\n","_varVector don't has the same var");
+      Variable *var = new Variable(symtable[_scanner.tokenValue()].first);
+      _varVector.push_back(var);
+      return var;
     }else if(token == NUMBER){
-      //std::cout << new Number(_scanner.tokenValue()) << endl;
       return new Number(_scanner.tokenValue());
     }else if(token == ATOM || token == ATOMSC){
       Atom* atom = new Atom(symtable[_scanner.tokenValue()].first);
@@ -39,11 +48,8 @@ public:
     else if(token == '['){
       return list();
     }
-
     return nullptr;
   }
-
-
 
   Term * structure() {
     Atom structName = Atom(symtable[_scanner.tokenValue()].first);
@@ -54,11 +60,9 @@ public:
     {
       vector<Term *> args(_terms.begin() + startIndexOfStructArgs, _terms.end());
       _terms.erase(_terms.begin() + startIndexOfStructArgs, _terms.end());
-
-
       return new Struct(structName, args);
     } else {
-      throw string("unexpected token");
+      throw string("Unbalanced operator");//不符合
     }
   }
 
@@ -69,9 +73,12 @@ public:
     {
       vector<Term *> args(_terms.begin() + startIndexOfListArgs, _terms.end());
       _terms.erase(_terms.begin() + startIndexOfListArgs, _terms.end());
+      if(args.size()==0){
+        return new Atom("[]");
+      }
       return new List(args);
     } else {
-      throw string("unexpected token");
+      throw string("Unbalanced operator");//不符合
     }
   }
 
@@ -79,109 +86,96 @@ public:
     return _terms;
   }
 
-  void matchings(){
-    /*先讀入scanner*/
-    Term* term = createTerm();
-
-    /*createTerm回傳如果是空指標代表沒有輸入東西*/
-    if(term!=nullptr){
-      /*判斷目前是不是讀到,*/
-      if(comma){
-        /*去檢查有沒有相同的symbol*/
-        Term* findTerm = find(term);
-        /*如果不是空指標代表有相同的跟他做match*/
-        if(findTerm != nullptr){
-          term->match(*findTerm);
-        }
-      }
-      _terms.push_back(term);
-      /*產生樹*/
-      while((_currentToken = _scanner.nextToken()) == ',' ||  _currentToken=='='|| _currentToken == ';'){
-        if(_currentToken == '='){
-          comma = false;
-          /*左節點擺目前的數*/
-          Node* left = new Node(TERM,_terms.back(),nullptr,nullptr);
-          /*塞入下一個*/
-          if(_terms.back()->value()== "s(s(X))"){
-            std::cout << "104fk" << endl;
-          }
-          _terms.push_back(createTerm());
-          /*右節點擺剛剛塞入的數*/
-          Node* right = new Node(TERM,_terms.back(),nullptr,nullptr);
-          if(_terms.back()->value()== "s(s(X))"){
-            /*可能地方*/
-          }
-          /*擺入=並連到左節點與右節點*/
-          Node* root = new Node(EQUALITY,nullptr,left,right);
-          _expressionTree = root;
-        }
-        else if(_currentToken == ','){
-          comma = true;
-          Node * left = _expressionTree;
-          matchings();
-          Node * root = new Node(COMMA, nullptr, left, expressionTree());
-          _expressionTree = root;
-        }
-        else{
-          comma = false;
-          Node * left = _expressionTree;
-          matchings();
-          Node * root = new Node(SEMICOLON, nullptr, left, expressionTree());
-          _expressionTree = root;
-        }
-      }/*
-      std::cout << "112" << endl;
-      std::cout << _terms[0]->value() << endl;
-      std::cout << _terms[1]->value() << endl;
-      std::cout << _terms[2]->value() << endl;
-      std::cout << _terms[3]->value() << endl;
-      std::cout << _terms[4]->value() << endl;
-      std::cout << _terms[5]->value() << endl;
-      _terms[5]->match(*term);
-      std::cout << _terms[5]->typeinfo() << endl;*/
+  void buildExpression(){
+    // createTerm();
+    //printf("%s\n","buildExpression start disjunctionMatch");
+    disjunctionMatch();
+    //printf("%s\n","buildExpression restDisjunctionMatch");
+    restDisjunctionMatch();
+    if (createTerm()  != nullptr || _currentToken != '.'){
+      //printf("LINE96 %d\n",_currentToken);
+      throw string("Missing token '.'");
     }
   }
 
-  Node* expressionTree(){
-    return _expressionTree;
+  void disjunctionMatch() {
+    //printf("%s\n","disjunctionMatch start conjunctionMatch");
+    conjunctionMatch();
+    //printf("%s\n","disjunctionMatch start restConjunctionMatch");
+    restConjunctionMatch();
   }
 
-  /*去term中尋找是否有重複的*/
-  Term * find(Term * term){
-    for(int index = 0; index < _terms.size() ; index++){
-      /*目前的term和傳進來的term有沒有symbol相同的*/
-      if(_terms[index]->symbol() == term->symbol()) {
-        return _terms[index];
-      }
-      /*動態轉型struct*/
-      Struct * s = dynamic_cast<Struct*>(_terms[index]);
-      /*s如果不是空指標就代表有struct去找struct裏頭有沒有symbol相同的*/
-      if(s) {
-        return findStruct(s,term);
-      }
+  void conjunctionMatch() {
+    //printf("%s\n","start conjunctionMatch");
+    Term * left = createTerm();
+    //printf("LINE113 left:%s\n",left->symbol());
+    if (createTerm() == nullptr && _currentToken == '=') {
+      //printf("%s\n","createTerm() == nullptr && _currentToken == '='");
+      Term * right = createTerm();
+      //printf("LINE117 right:%s\n",right->symbol());
+      _expStack.push(new MatchExp(left, right));
     }
-    return nullptr;
+    else if ( _currentToken == '.' )  {
+      throw string( left->symbol() + " does never get assignment");
+    }
+    else if ( _currentToken == ';' || _currentToken == ',' ){
+      throw string( "Unexpected '" + string(1, _currentToken) + "' before '" +  _scanner.currentChar()+"'");
+    }
   }
 
-  Term * findStruct(Struct * s, Term * term){
-    /*檢查struct裏頭有沒有和term的symbol一樣的*/
-    for(int i = 0; i < s->arity() ; i++){
-      if(s->args(i)->symbol() == term->symbol()) {
-        return s->args(i);
+  void restDisjunctionMatch() {
+    if (_scanner.currentChar() == ';') {
+      _varVector.clear();//初始化
+      createTerm();
+      //printf("%s\n","restDisjunctionMatch start disjunctionMatch");
+      _scanner.peekNextToken();
+      if (_scanner.tokenValue() == NONE ){//偷看下一個
+        throw string ( "Unexpected ';' before '.'");
       }
-      Struct * ss = dynamic_cast<Struct*>(s->args(i));
-      if(ss) {
-        return findStruct(ss,term);
-      }
+      disjunctionMatch();
+      Exp *right = _expStack.top();
+      _expStack.pop();
+      Exp *left = _expStack.top();
+      _expStack.pop();
+      _expStack.push(new DisjExp(left, right));
+      //printf("%s\n","restDisjunctionMatch start restDisjunctionMatch");
+      restDisjunctionMatch();
     }
-    //return nullptr;
   }
-private:
+
+  void restConjunctionMatch() {
+    //printf("%s\n","start restConjunctionMatch");
+    if (_scanner.currentChar() == ',') {
+      createTerm();
+      _scanner.peekNextToken();//偷看下一個是不是空值
+      if(_scanner.tokenValue() == NONE){
+        throw string ( "Unexpected ',' before '.'");
+      }
+      conjunctionMatch();
+      Exp *right = _expStack.top();
+      _expStack.pop();
+      Exp *left = _expStack.top();
+      _expStack.pop();
+      _expStack.push(new ConjExp(left, right));
+      restConjunctionMatch();
+    }
+  }
+
+  Exp* getExpressionTree(){
+    return _expStack.top();
+  }
+
+  string result() {
+    return getExpressionTree()->getResult() + ".";
+  }
+
+private:/*
   FRIEND_TEST(ParserTest, createArgs);
   FRIEND_TEST(ParserTest,ListOfTermsEmpty);
   FRIEND_TEST(ParserTest,listofTermsTwoNumber);
   FRIEND_TEST(ParserTest, createTerm_nestedStruct3);
-
+  FRIEND_TEST(ParserTest, createTerms);
+*/
   void createTerms() {
     Term* term = createTerm();
     if(term!=nullptr)
@@ -196,8 +190,8 @@ private:
   vector<Term *> _terms;
   Scanner _scanner;
   int _currentToken;
-  Node* _expressionTree;
-  bool comma = false;
-  int _lastToken;
+  //MatchExp* _root;
+  stack<Exp*> _expStack;
+  vector<Variable *> _varVector;
 };
 #endif
